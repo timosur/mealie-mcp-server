@@ -45,13 +45,15 @@ def register_recipe_tools(mcp: FastMCP, mealie: MealieFetcher) -> None:
                     "tags": tags,
                 }
             )
-            return mealie.get_recipes(
+            result = mealie.get_recipes(
                 search=search,
                 page=page,
                 per_page=per_page,
                 categories=categories,
                 tags=tags,
             )
+            import json
+            return json.dumps(result)
         except Exception as e:
             error_msg = f"Error fetching recipes: {str(e)}"
             logger.error({"message": error_msg})
@@ -75,7 +77,9 @@ def register_recipe_tools(mcp: FastMCP, mealie: MealieFetcher) -> None:
         """
         try:
             logger.info({"message": "Fetching recipe", "slug": slug})
-            return mealie.get_recipe(slug)
+            result = mealie.get_recipe(slug)
+            import json
+            return json.dumps(result)
         except Exception as e:
             error_msg = f"Error fetching recipe with slug '{slug}': {str(e)}"
             logger.error({"message": error_msg})
@@ -108,7 +112,7 @@ def register_recipe_tools(mcp: FastMCP, mealie: MealieFetcher) -> None:
                     "recipeYield",
                     "totalTime",
                     "rating",
-                      "recipeIngredient",
+                    "recipeIngredient",
                     "lastMade",
                 },
                 exclude_none=True,
@@ -144,7 +148,9 @@ def register_recipe_tools(mcp: FastMCP, mealie: MealieFetcher) -> None:
             recipe.recipeInstructions = [
                 RecipeInstruction(text=i) for i in instructions
             ]
-            return mealie.update_recipe(slug, recipe.model_dump(exclude_none=True))
+            result = mealie.update_recipe(slug, recipe.model_dump(exclude_none=True))
+            import json
+            return json.dumps(result)
         except Exception as e:
             error_msg = f"Error creating recipe '{name}': {str(e)}"
             logger.error({"message": error_msg})

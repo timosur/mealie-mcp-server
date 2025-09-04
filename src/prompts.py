@@ -1,5 +1,5 @@
 from fastmcp import FastMCP
-from fastmcp.prompts import AssistantMessage, Message, UserMessage
+from fastmcp.prompts import Message
 
 
 def register_prompts(mcp: FastMCP) -> None:
@@ -55,6 +55,6 @@ You have access to a Mealie recipe database with various recipes. You can search
 
         # Create and return a list of Message objects
         return [
-            AssistantMessage(system_content),
-            UserMessage(user_content),
+            Message(role="user", content=user_content),
+            Message(role="system", content=system_content),
         ]
