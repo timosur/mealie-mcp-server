@@ -18,8 +18,13 @@ RUN uv sync --frozen
 ENV PYTHONPATH=/app/src
 ENV LOG_LEVEL=INFO
 
-# Expose port if needed (though MCP typically uses stdio)
+# Expose port for the MCP server
 EXPOSE 8000
 
-# Run the MCP server using uvx mcpo
-CMD ["uvx", "mcpo", "--config", "config.json"]
+# Environment variables to be set at runtime
+# MEALIE_BASE_URL - Base URL for Mealie instance
+# MEALIE_API_KEY - API key for Mealie authentication  
+# API_KEY - API key for MCP server authentication
+
+# Run the MCP server using uvx mcpo with port and API key
+CMD ["sh", "-c", "uvx mcpo --port 8000 --api-key $API_KEY -- uv --directory src run server.py"]
